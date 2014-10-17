@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="ISO-8859-15">
+  <link rel="stylesheet" href="style.css"/>
+  <script src="angular.js"></script>
+  <script src="controllers.js"></script>
+</head>
+<body ng-app='test'>
+<div ng-controller="formCtr" >
+	<!--Form menu-->
+	<div class="header">
+		<div class="tab" ng-repeat="form in forms" ng-class="{selected : displayedForm == form.name}" >
+			<a href="#{{form.name}}">{{form.name}}</a>
+		</div>
+		<!--New Form-->
+		<div ng-class="{selected : displayedForm == 'Nouveau_Formulaire'}" >
+			<a href="#Nouveau_Formulaire" ng-hide="displayedForm == 'Nouveau_Formulaire'">+</a>
+			<span ng-show="displayedForm == 'Nouveau_Formulaire'">
+				<input placeholder="Label" ng-model="newFormName"/>
+				<button type="button" value="+" ng-disabled="!newFormName" ng-click="addForm()">+</button>
+			</span>
+		</div>
+		
+	</div>
+	<br />
+	<br />
+	<div ng-repeat="form in forms" ng-show="displayedForm == form.name;" class="wrapper">
+		<!--Form template -->
+		<form ng-submit="submitForm(form)">
+			<!--Input template -->
+			<div ng-repeat="item in form.inputs" class="formInputWrapper">
+				<span ng-class="{selected: item.isFocus}">{{item.label}} : 
+					<input ng-focus="labelOnFocus(item)" 
+						   ng-blur="labelOnBlur(item)"  
+						   ng-model="item.value"
+						   ng-required="item.required";
+						   placeholder="{{item.label}}"/>
+				</span>
+			</div>
+			<br />
+			<!--new label-->
+			<br />
+			<div>
+				<span>
+					<input placeholder="Nouveau Label" ng-model="form.newLabel"/>
+					<button type="button" value="+" ng-disabled="!form.newLabel" ng-click="addLabel(form)">+</button>
+				</span>
+			</div>
+			<button type="reset">Clear</button>
+			<button type="submit">Ok</button>
+		</form>
+
+		<table>
+			<thead><td ng-repeat="item in form.inputs">{{item.label}}</td></thead>
+			<tbody>
+				<!--row template-->
+				<tr ng-repeat="data in form.datas" class="contactTableLine">
+					<!--cells template-->
+					<td ng-repeat="item in data track by $index">
+						<span ng-hide="data.isEditing" ng-model="item">{{item}}</span>
+						<input ng-show="data.isEditing" type="text" ng-model="item"/>
+					</td>
+					
+					<td class="deleteTrigger">
+						<span ng-hide="data.isEditing" ng-click="editData(form,data)">E</span>
+						<span ng-show="data.isEditing" ng-click="saveData(data)">OK</span>
+					</td>
+					<td class="deleteTrigger" ng-click="deleteData(form.datas,$index);" ng-hide="data.isEditing">X</td>
+				</tr>
+			<tbody>
+		</table>
+	</div>
+</div>
+
+
+
+</body>
+</html>
