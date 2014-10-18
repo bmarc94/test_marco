@@ -1,10 +1,3 @@
-<html>
-<head>
-
-<SCRIPT>
-/*******/
-/*UTILS*/
-/*******/
 function createElementAndAppend(elTagName,parentEl){
 	var el = document.createElement(elTagName);
 	parentEl.appendChild(el);
@@ -18,12 +11,15 @@ function createElementAndAppend(elTagName,parentEl){
 
 /*base*/
 function BaseTreeView(targetId,data){
-	this.treeViewWrapper = document.getElementById(targetId);
-	this.treeViewWrapper.id = targetId;
-	this.data = data;
 	
-	this.init = function(){
-		for (var i in data){
+	
+	this.init = function(targetId,data){
+		this.treeViewWrapper = document.getElementById(targetId);
+		this.treeViewWrapper.id = targetId;
+		this.data = data;
+		this.selectedItem = null;
+		
+		for (var i in this.data){
 			var item=this.createItem(this.data[i], i);
 		}
 	}
@@ -43,7 +39,7 @@ function BaseTreeView(targetId,data){
 			icon.id = parentId ? parentId + "["+index+"].sd_IMG" : "["+index+"].sd_IMG";
 			
 			itemWrapper.onclick=function (){
-				self.toggleDisplayBranch(this)
+				self.itemWrapper_click(this);
 			};		
 		}else{
 			icon.src = this.directorypath + "1ptrans.gif";
@@ -99,70 +95,51 @@ function BaseTreeView(targetId,data){
 		
 		item.nextSibling.style.position="inherit";
 		item.nextSibling.style.display="block";
-		item.nextSibling.style.paddingLeft=25 + "px";
 	}
 	
-	
-	this.init();
-}
-
-
-/*test héritage bidon*/
-
-function treeView(targetId,data){
-	BaseTreeView.apply(this,[targetId,data]);
 	this.itemOnclick = function(item){
-	if(this.selectedItem){
+		if(this.selectedItem){
 			this.selectedItem.children[1].style.background="";
 		}
 		this.selectedItem = item;
 		this.selectedItem.children[1].style.background="blue";
+	}
+	
+	this.itemWrapper_click = function(item){
+		this.toggleDisplayBranch(item);
+	}
+	
+	//this.init();
 }
-}
 
 
+/*test h�ritage bidon*/
 
-function treeView2(targetId,data){
-	treeView.apply(this,[targetId,data]);
+
+function treeView(){}
+treeView.prototype = new BaseTreeView();
+
+
+function treeView2(){
+	BaseTreeView.apply(this);
 	var self = this;
 
-	/*TEST 
-	A voir pour récupérer le super....
-	
-	self.itemOnclick
-	
-	*/
+	/*TEST */
 	var SuperItemOnclick = this.itemOnclick;
 	
 	this.itemOnclick = function(item){
-		SuperItemOnclick(item);
+		SuperItemOnclick(item); /*WTF? WORKS!!!!*/
 		alert(self.data);
 	}
-}
-
-
-
-window.onload = function(){
-	var treeviewData =[{l:'Plan-Programme-Projet - Invite',sd:[{l:'Plan UNICA (vue courante)',sd:[{l:'AMT_test'},{l:'RB_TEST_PLAN'},{l:'Banque des Services'},{l:'Banque Conseil'},{l:'Plan de reprise des motifs de contacts'},{l:'Banque des Entreprises'},{l:'Plan Evènement Informatif'},{l:'Plan tests des canaux'},{l:'PLAN 2014'},{l:'Plan tous marhés'},{l:'PLANS PROGRAMMES RELATIONNELS'},{l:'Préconisarions batch'},{l:'Optimisation PNB cartes'}]}]},
-	{l:'Plan-Programme-Projet - Invite',sd:[{l:'Plan UNICA (vue courante)',sd:[{l:'AMT_test'},{l:'RB_eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeTEST_PLAN'},{l:'Banque des Services'},{l:'Banque Conseil'},{l:'Plan de reprise des motifs de contacts'},{l:'Banque des Entreprises'},{l:'Plan Evènement Informatif'},{l:'Plan tests des canaux'},{l:'PLAN 2014'},{l:'Plan tous marhés'},{l:'PLANS PROGRAMMES RELATIONNELS'},{l:'Préconisarions batch'},{l:'Optimisation PNB cartes'}]}]}];	
-	var tv1 = new treeView('treeview_test',treeviewData);
-	var tv2 = new treeView2('treeview_test',treeviewData);
+	this.itemWrapper_click = function(item){
+		this.toggleDisplayBranch(item);
+	}
 	
-
+	/*var superToogle = this.toggleDisplayBranch;
+	
+	this.toggleDisplayBranch = function(item){
+		superToogle(item); //WTF? DOESN'T WORK!!!!!!!!!!
+		alert(item.innerHTML);
+	}*/
 }
-</SCRIPT>
-<style>
-#treeview_test{
-width:500px;
-height:500px;
-background:red;
-overflow:auto;
-}
-</style>
-</head>
-<body>
-<div id='treeview_test'></div>
-
-</body>
-</html>
 
