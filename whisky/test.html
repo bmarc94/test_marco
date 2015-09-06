@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="ISO-8859-15">
+  <meta http-equiv="refresh" content="0; url=#/Accueil" />
+  <link rel="stylesheet" href="style.css"/>
+  <script src="angular.js"></script>
+  <script src="controllers.js"></script>
+</head>
+<body ng-app='test'>
+<div ng-controller="formCtr" >
+	<!--Form menu-->
+	<div class="header">
+		<span ng-repeat="menu in template" ng-class="{selected : displayedMenu == menu.menu}" >
+			<a href="#{{menu.menu}}">{{menu.menu}}</a>
+			
+			<!--div class="" ng-repeat="subMenu in menu.subMenus" ng-show="displayedMenu == menu.menu" >
+			1
+			<a href="#{{subMenus.subMenu}}">{{subMenus.subMenu}}</a>
+			</div-->
+			
+		</span>
+		<div></div>
+		<div ng-repeat="menu in template">
+			<div class="" ng-repeat="subMenu in menu.subMenus" ng-show="displayedMenu == menu.menu" >
+			<a href="#{{menu.menu}}/{{subMenu.subMenu}}">{{subMenu.subMenu}}</a>
+			</div>
+			
+		</div>
+		
+		
+		
+		<!--New Form-->
+		
+		
+		
+	</div>
+	<br />
+	<br />
+	<div ng-repeat="form in forms" ng-show="displayedMenu == form.name;" class="wrapper">
+		<!--Form template -->
+
+		<table>
+			<thead><td ng-repeat="item in form.inputs">{{item.label}}</td></thead>
+			<tbody>
+				<!--row template-->
+				<tr ng-repeat="data in form.datas" class="contactTableLine">
+					<!--cells template-->
+					<td ng-repeat="item in data track by $index">
+						<span ng-hide="data.isEditing" ng-model="item">{{item}}</span>
+						<input ng-show="data.isEditing" type="text" ng-model="item"/>
+					</td>
+					
+					<td class="deleteTrigger">
+						<span ng-hide="data.isEditing" ng-click="editData(form,data)">E</span>
+						<span ng-show="data.isEditing" ng-click="saveData(data)">OK</span>
+					</td>
+					<td class="deleteTrigger" ng-click="deleteData(form.datas,$index);" ng-hide="data.isEditing">X</td>
+				</tr>
+			<tbody>
+		</table>
+	</div>
+</div>
+
+
+
+</body>
+</html>

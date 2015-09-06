@@ -1,3 +1,6 @@
+/*******/
+/*UTILS*/
+/*******/
 function createElementAndAppend(elTagName,parentEl){
 	var el = document.createElement(elTagName);
 	parentEl.appendChild(el);

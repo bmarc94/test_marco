@@ -2,8 +2,10 @@ var app = angular.module('test', []);
 
 app.controller('formCtr', function($scope,$location){
 	$scope.location = $location;
-	$scope.forms = [{name:'Entreprise', inputs:[{label:"Raison Sociale",required:true},{label:"Contact"},{label:"Téléphone"}],datas:[]},
-					{name:'Particuliers', inputs:[{label:"Nom",required:true},{label:"Prénom"},{label:"Téléphone"}],datas:[]}
+	$scope.template = [{menu:'Accueil'},
+					   {menu:'Nos Whiskeys', subMenus:[{subMenu:'aberlour'},{subMenu:'ici'},{subMenu:'ici'}]},
+					   {menu:'Nos Vins', subMenus:[{subMenu:'gigondas'},{subMenu:'ici'},{subMenu:'ici'}]},
+					   {menu:'Nos Bières', subMenus:[{subMenu:'leffe'},{subMenu:'ici'},{subMenu:'ici'}]}
 					];
 					
 	var newForm = function(formName/*str*/,inputs/*list arr*/, datas/*string arr*/){
@@ -44,7 +46,6 @@ app.controller('formCtr', function($scope,$location){
 	$scope.addForm=function(){ 
 		var form  = newForm($scope.newFormName); /* newFormName : déclarée dans le html*/
 		
-		$scope.forms.push(form);
 		$location.path(form.name);
 		$scope.newFormName = '';
 	}
@@ -64,6 +65,7 @@ app.controller('formCtr', function($scope,$location){
 		elem.isFocus = false;
 	}
 	$scope.$watch("location.path()",function(path){
-		$scope.displayedForm = path.replace('/','');
+		alert(path);
+		$scope.displayedMenu = path.replace('/','');
 	})
 });
