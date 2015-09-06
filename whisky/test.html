@@ -2,7 +2,6 @@
 <html lang="fr">
 <head>
   <meta charset="ISO-8859-15">
-  <meta http-equiv="refresh" content="0; url=#/Accueil" />
   <link rel="stylesheet" href="style.css"/>
   <script src="angular.js"></script>
   <script src="controllers.js"></script>
@@ -10,8 +9,8 @@
 <body ng-app='test'>
 <div ng-controller="formCtr" >
 	<!--Form menu-->
-	<div class="header">
-		<span ng-repeat="menu in template" ng-class="{selected : displayedMenu == menu.menu}" >
+	<div class="menu">
+		<span ng-repeat="menu in template" ng-class="{selected : displayedMenu[1] == menu.menu}" >
 			<a href="#{{menu.menu}}">{{menu.menu}}</a>
 			
 			<!--div class="" ng-repeat="subMenu in menu.subMenus" ng-show="displayedMenu == menu.menu" >
@@ -20,47 +19,30 @@
 			</div-->
 			
 		</span>
-		<div></div>
-		<div ng-repeat="menu in template">
-			<div class="" ng-repeat="subMenu in menu.subMenus" ng-show="displayedMenu == menu.menu" >
-			<a href="#{{menu.menu}}/{{subMenu.subMenu}}">{{subMenu.subMenu}}</a>
-			</div>
-			
+	</div>
+	
+	<div ng-show="displayedMenu[1] == 'Accueil'">
+		BIENVENU SUR LE SITE DU LE MEILLEUR BAR DE PARIS !!
+	</div>
+	
+	<div ng-repeat="menu in template">
+		<span class="subMenu" ng-repeat="subMenu in menu.subMenus" ng-show="displayedMenu[1] == menu.menu" ng-class="{selected : displayedMenu[2] == subMenu.subMenu}">
+			<a href="#{{menu.menu}}/{{subMenu.subMenu}}" >{{subMenu.subMenu}}</a>
+		</span>
+		<div class="description" ng-repeat="subMenu in menu.subMenus" ng-show="displayedMenu[2] == subMenu.subMenu">
+			<span>
+				{{subMenu.description}}
+			</span>
 		</div>
-		
-		
-		
-		<!--New Form-->
-		
-		
-		
 	</div>
-	<br />
-	<br />
-	<div ng-repeat="form in forms" ng-show="displayedMenu == form.name;" class="wrapper">
-		<!--Form template -->
-
-		<table>
-			<thead><td ng-repeat="item in form.inputs">{{item.label}}</td></thead>
-			<tbody>
-				<!--row template-->
-				<tr ng-repeat="data in form.datas" class="contactTableLine">
-					<!--cells template-->
-					<td ng-repeat="item in data track by $index">
-						<span ng-hide="data.isEditing" ng-model="item">{{item}}</span>
-						<input ng-show="data.isEditing" type="text" ng-model="item"/>
-					</td>
-					
-					<td class="deleteTrigger">
-						<span ng-hide="data.isEditing" ng-click="editData(form,data)">E</span>
-						<span ng-show="data.isEditing" ng-click="saveData(data)">OK</span>
-					</td>
-					<td class="deleteTrigger" ng-click="deleteData(form.datas,$index);" ng-hide="data.isEditing">X</td>
-				</tr>
-			<tbody>
-		</table>
-	</div>
+	
+	
+		
+		
+		
+		
 </div>
+	
 
 
 

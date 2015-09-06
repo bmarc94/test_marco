@@ -3,9 +3,20 @@ var app = angular.module('test', []);
 app.controller('formCtr', function($scope,$location){
 	$scope.location = $location;
 	$scope.template = [{menu:'Accueil'},
-					   {menu:'Nos Whiskeys', subMenus:[{subMenu:'aberlour'},{subMenu:'ici'},{subMenu:'ici'}]},
-					   {menu:'Nos Vins', subMenus:[{subMenu:'gigondas'},{subMenu:'ici'},{subMenu:'ici'}]},
-					   {menu:'Nos Bières', subMenus:[{subMenu:'leffe'},{subMenu:'ici'},{subMenu:'ici'}]}
+					   {menu:'Nos Whiskeys', subMenus:[
+							{subMenu:'aberlour', description:"aberlour très très bon"},
+							{subMenu:'Caol ila', description:"Caol Ila très très bon"},
+							{subMenu:'Oban'}
+						]},
+					   {menu:'Nos Vins', subMenus:[
+							{subMenu:'gigondas', description:"Gidondas ouais ouais, bof."},
+							{subMenu:'Saint-émilion', description:"saint émilion : il y a saint émilion et saint émilion..."},
+							{subMenu:'Cotte rotie', description: "Cotte Rotie : Ca bordel c'est du lourd"}
+						]},
+					   {menu:'Nos Bières', subMenus:[
+					   {subMenu:'Chouffe', description:"CHOUFFE : Ouais bon C'est de la bière quoi !"},
+					   {subMenu:'Troll',description:"La cuvée des trolls : Ouais bon C'est de la bière quoi !"}
+					   ]}
 					];
 					
 	var newForm = function(formName/*str*/,inputs/*list arr*/, datas/*string arr*/){
@@ -65,7 +76,9 @@ app.controller('formCtr', function($scope,$location){
 		elem.isFocus = false;
 	}
 	$scope.$watch("location.path()",function(path){
-		alert(path);
-		$scope.displayedMenu = path.replace('/','');
+		
+		$scope.displayedMenu = path!="" ? path.split('/') : path=["","Accueil"];
+		/*$scope.displayedMenu = path.replace('/','');*/
+		//alert($scope.displayedMenu[2]);
 	})
 });
